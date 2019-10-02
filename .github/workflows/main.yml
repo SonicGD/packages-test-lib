@@ -1,0 +1,21 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Generate build number
+      uses: einaregilsson/build-number@v1 
+      with:
+        token: ${{secrets.github_token}} 
+    - name: Build lib
+      run: dotnet pack -c Release /p:PackageVersion=1.0.ci-$BUILD_NUMBER -o $(pwd)/packages
+    - name: Add nuget source
+      run: nuget source Add -Name "GitHub" -Source "https://nuget.pkg.github.com/SonicGD/index.json" -UserName SonicGD -Password ${{secrets.github_token}}
+    - name: Push to packages
+      run: find nugets -name *.nupkg -exec dotnet nuget push {} -Source "GitHub" \;
