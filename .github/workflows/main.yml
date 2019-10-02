@@ -16,4 +16,4 @@ jobs:
     - name: Build lib
       run: dotnet pack src/TestLib/TestLib.csproj -c Release /p:PackageVersion=1.0.0-ci.$BUILD_NUMBER -o $(pwd)/packages
     - name: Push to packages
-      run: find packages -name *.nupkg -exec dotnet nuget push {} -s "https://nuget.pkg.github.com/SonicGD/index.json" -k ${{secrets.github_token}} \;
+      run: dotnet nuget push packages/TestLib.1.0.0-ci.$BUILD_NUMBER.nupkg -s "https://nuget.pkg.github.com/SonicGD/index.json" -k ${{secrets.ACTIONS_TOKEN}} \;
