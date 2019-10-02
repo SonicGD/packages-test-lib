@@ -14,7 +14,7 @@ jobs:
       with:
         token: ${{secrets.github_token}} 
     - name: Build lib
-      run: dotnet pack src/TestLib.Grpc/TestLib.csproj -c Release /p:PackageVersion=1.0.ci-$BUILD_NUMBER -o $(pwd)/packages
+      run: dotnet pack src/TestLib/TestLib.csproj -c Release /p:PackageVersion=1.0.ci-$BUILD_NUMBER -o $(pwd)/packages
     - name: Add nuget source
       run: nuget source Add -Name "GitHub" -Source "https://nuget.pkg.github.com/SonicGD/index.json" -UserName SonicGD -Password ${{secrets.github_token}}
     - name: Push to packages
